@@ -28,7 +28,7 @@
         `remark`
     </sql>
 
-    <insert id="insert" useGeneratedKeys="true" keyColumn="id" parameterType="com.hzero.chenglu.entity.HgylPersonInfo">
+    <insert id="insert" parameterType="com.hzero.chenglu.entity.HgylPersonInfo" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO hgyl_person_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test ='null != id'>
@@ -101,7 +101,7 @@
         WHERE `id` = #{id}
     </delete>
 
-    <update id="update" parameterType="com.hzero.chenglu.entity.HgylPersonInfo">
+    <update id="update">
         UPDATE hgyl_person_info
         <set>
             <if test ='null != id'>id = #{id},</if>
@@ -140,5 +140,10 @@
         SELECT count(1)
         FROM hgyl_person_info
     </select>
+    <!--<select id="selectbyquery" resultMap="BaseResultMap">-->
+        <!--SELECT <include refid="Base_Column_List" />-->
+        <!--FROM  hgyl_person_info-->
+        <!--WHERE-->
+    <!--</select>-->
 
 </mapper>

@@ -7,31 +7,33 @@ import com.hzero.chenglu.unit.ReturnT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 @Component
 @Service
 public class HgylPersonInfoServiceImpl implements HgylPersonInfoService {
-
-    @Resource
+    @Autowired
     private HgylPersonInfoDao hgylPersonInfoDao;
 
     /**
      * 新增
      */
     @Override
-    public ReturnT<String> insert(HgylPersonInfo hgylPersonInfo) {
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public int insert(HgylPersonInfo hgylPersonInfo) {
 
         // valid
         if (hgylPersonInfo == null) {
-            return new ReturnT<String>();
+            return 0;
         }
+        System.out.println("dao插入");
 
-        hgylPersonInfoDao.insert(hgylPersonInfo);
-        return ReturnT.buildSuccess;
+
+        return hgylPersonInfoDao.insert(hgylPersonInfo);
     }
 
     /**
@@ -47,9 +49,9 @@ public class HgylPersonInfoServiceImpl implements HgylPersonInfoService {
      * 更新
      */
     @Override
-    public ReturnT<String> update(HgylPersonInfo hgylPersonInfo) {
-        int ret = hgylPersonInfoDao.update(hgylPersonInfo);
-        return (ret <= 0) ? ReturnT.build("11111","更新失败") : ReturnT.buildSuccess;
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public int update(HgylPersonInfo hgylPersonInfo) {
+        return  hgylPersonInfoDao.update(hgylPersonInfo);
     }
 
     /**

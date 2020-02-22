@@ -24,7 +24,8 @@ public class HgylPersonInfoController {
      * 新增
      */
     @RequestMapping("/insert")
-    public ReturnT<String> insert(HgylPersonInfo hgylPersonInfo){
+    public int insert(HgylPersonInfo hgylPersonInfo){
+
         return hgylPersonInfoService.insert(hgylPersonInfo);
     }
 
@@ -40,7 +41,7 @@ public class HgylPersonInfoController {
      * 更新
      */
     @RequestMapping("/update")
-    public ReturnT<String> update(HgylPersonInfo hgylPersonInfo){
+    public int update(HgylPersonInfo hgylPersonInfo){
         return hgylPersonInfoService.update(hgylPersonInfo);
     }
 
