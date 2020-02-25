@@ -9,7 +9,7 @@ public interface HgylPersonInfoService {
     /**
      * 新增
      */
-    public int insert(HgylPersonInfo hgylPersonInfo);
+    public ReturnT insert(HgylPersonInfo hgylPersonInfo);
 
     /**
      * 删除
@@ -19,12 +19,14 @@ public interface HgylPersonInfoService {
     /**
      * 更新
      */
-    public int update(HgylPersonInfo hgylPersonInfo);
+    public ReturnT update(HgylPersonInfo hgylPersonInfo);
 
     /**
      * Load查询
      */
-    public HgylPersonInfo load(int id);
+    public ReturnT load(int id);
+
+    public ReturnT list(HgylPersonInfo HgylPersonInfo);
 
     /**
      * 分页查询

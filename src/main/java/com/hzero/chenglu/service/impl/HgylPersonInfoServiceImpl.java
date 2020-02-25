@@ -3,8 +3,10 @@ package com.hzero.chenglu.service.impl;
 import com.hzero.chenglu.dto.HgylPersonInfoDao;
 import com.hzero.chenglu.entity.HgylPersonInfo;
 import com.hzero.chenglu.service.HgylPersonInfoService;
+import com.hzero.chenglu.unit.BusinessException;
 import com.hzero.chenglu.unit.ReturnT;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -13,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 @Component
 @Service
 public class HgylPersonInfoServiceImpl implements HgylPersonInfoService {
@@ -24,16 +27,30 @@ public class HgylPersonInfoServiceImpl implements HgylPersonInfoService {
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public int insert(HgylPersonInfo hgylPersonInfo) {
-
+    public ReturnT insert(HgylPersonInfo hgylPersonInfo) {
+        String msg = "";
+        String code = "";
+        Object datas = null;
         // valid
         if (hgylPersonInfo == null) {
-            return 0;
+            return ReturnT.build("00001", "数据不能为空");
         }
         System.out.println("dao插入");
+        try {
+            hgylPersonInfoDao.insert(hgylPersonInfo);
+            datas = hgylPersonInfo;
+        } catch (DataAccessException e) {
+            code = "00001";
+            msg = "更新失败";
+            datas = e.getCause().toString();
+            System.out.println("错误信息：" + e.getCause().toString());
+        }
+        if (code == "00001") {
+            return ReturnT.build(code, msg, datas);
 
-
-        return hgylPersonInfoDao.insert(hgylPersonInfo);
+        }
+//        return ReturnT.build("00000", "success", datas);
+        return ReturnT.buildSuccess(datas);
     }
 
     /**
@@ -42,7 +59,7 @@ public class HgylPersonInfoServiceImpl implements HgylPersonInfoService {
     @Override
     public ReturnT<String> delete(int id) {
         int ret = hgylPersonInfoDao.delete(id);
-        return ret > 0 ? ReturnT.buildSuccess : ReturnT.build("11111","删除失败");
+        return ret > 0 ? ReturnT.build("00000", "删除成功") : ReturnT.build("11111", "删除失败");
     }
 
     /**
@@ -50,18 +67,46 @@ public class HgylPersonInfoServiceImpl implements HgylPersonInfoService {
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public int update(HgylPersonInfo hgylPersonInfo) {
-        return  hgylPersonInfoDao.update(hgylPersonInfo);
+    public ReturnT update(HgylPersonInfo hgylPersonInfo) {
+        String msg = "";
+        String code = "";
+        String datas = "";
+
+        int count = 0;
+
+        try {
+            count = hgylPersonInfoDao.update(hgylPersonInfo);
+        } catch (Exception e) {
+            code = "00001";
+            msg = "更新失败";
+            datas = BusinessException.class.toString();
+            System.out.println(e.getMessage());
+        }
+        if (count == 0) {
+            datas = BusinessException.class.toString();
+            return ReturnT.build(code, msg, datas);
+        } else {
+            return ReturnT.buildSuccess;
+        }
     }
 
     /**
      * Load查询
      */
     @Override
-    public HgylPersonInfo load(int id) {
-        System.out.println("service:"+id);
-        return hgylPersonInfoDao.load(id);
+    public ReturnT load(int id) {
+        System.out.println("service:" + id);
+        return ReturnT.buildSuccess(hgylPersonInfoDao.load(id));
     }
+
+    /**
+     * Load查询
+     */
+    @Override
+    public ReturnT list(HgylPersonInfo HgylPersonInfo) {
+        return ReturnT.buildSuccess(hgylPersonInfoDao.list(HgylPersonInfo));
+    }
+
 
     /**
      * 分页查询

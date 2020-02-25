@@ -28,12 +28,9 @@
         `remark`
     </sql>
 
-    <insert id="insert" parameterType="com.hzero.chenglu.entity.HgylPersonInfo" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.hzero.chenglu.entity.HgylPersonInfo" >
         INSERT INTO hgyl_person_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test ='null != id'>
-                `id`,
-            </if>
             <if test ='null != area'>
                 `area`,
             </if>
@@ -63,9 +60,6 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test ='null != id'>
-                #{id},
-            </if>
             <if test ='null != area'>
                 #{area},
             </if>
@@ -145,5 +139,43 @@
         <!--FROM  hgyl_person_info-->
         <!--WHERE-->
     <!--</select>-->
+
+    <select id="list" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from `hgyl_person_info`
+        <trim prefix="where " prefixOverrides="and ">
+            <if test="id != null">
+                and `id` = #{id}
+            </if>
+            <if test="area != null">
+                and `area` = #{area}
+            </if>
+            <if test="jobNum != null">
+                and `job_num` = #{jobNum}
+            </if>
+            <if test="name != null">
+                and `name` like CONCAT(CONCAT('%',#{name}),'%')
+            </if>
+            <if test="project != null">
+                and `project` = #{project}
+            </if>
+            <if test="working != null">
+                and `working` = #{working}
+            </if>
+            <if test="site != null">
+                and `site` = #{site}
+            </if>
+            <if test="startDate != null">
+                and `start_date` = #{startDate}
+            </if>
+            <if test="endDate != null">
+                and `end_date` = #{endDate}
+            </if>
+            <if test="remark != null">
+                and `remark` = #{remark}
+            </if>
+        </trim>
+    </select>
 
 </mapper>

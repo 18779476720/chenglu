@@ -2,7 +2,6 @@ package com.hzero.chenglu.unit;
 
 public class BusinessException extends RuntimeException{
     private String code;
-
     private String msg;
 
     public BusinessException(XKHResponseCodeEnum xKHResponseCodeEnum) {

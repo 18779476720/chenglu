@@ -6,7 +6,7 @@ import java.util.List;
 
 public class ReturnT<T> implements Serializable {
 
-    public static ReturnT<String> buildSuccess;
+    public static ReturnT<String> buildSuccess = new ReturnT("00000","success","");
     /**
      * 返回code
      */
@@ -71,6 +71,12 @@ public class ReturnT<T> implements Serializable {
         apiResult.setCode(XKHResponseCodeEnum.SUCCESS.getCode());
         apiResult.setMessage(XKHResponseCodeEnum.SUCCESS.getChineseMessage());
         apiResult.setDatas(datas);
+        return apiResult;
+    }
+    public static <T> ReturnT<T> buildSuccess() {
+        ReturnT<T> apiResult = new ReturnT<T>();
+        apiResult.setCode(XKHResponseCodeEnum.SUCCESS.getCode());
+        apiResult.setMessage(XKHResponseCodeEnum.SUCCESS.getChineseMessage());
         return apiResult;
     }
 

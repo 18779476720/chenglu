@@ -1,7 +1,10 @@
 package com.hzero.chenglu.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import javax.validation.constraints.NotNull;
 
+//@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
 public class HgylPersonInfo {
 
     /**
